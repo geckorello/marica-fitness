@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Marica">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0c0c0e">
+  <title>Marica — Training Plan 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:          #0c0c0e;
+      --surface:     #141416;
+      --surface-2:   #1c1c1f;
+      --border:      rgba(255,255,255,0.07);
+      --border-2:    rgba(255,255,255,0.12);
+      --rose:        #d4606a;
+      --rose-dim:    rgba(212,96,106,0.10);
+      --rose-mid:    rgba(212,96,106,0.22);
+      --text:        #f0ede8;
+      --text-2:      #c8c4be;
+      --text-3:      #908c88;
+      --red:         #e05050;
+      --cyan:        #38bcd4;
+      --green:       #48c878;
+      --r:           10px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    button, a, [onclick] { touch-action: manipulation; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ─────────────────────────────────── */
+    .site-header {
+      padding: 28px 20px 0;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .header-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .site-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 8vw, 52px);
+      letter-spacing: 3px;
+      line-height: 1;
+      color: var(--text);
+    }
+    .site-title em { color: var(--rose); font-style: normal; }
+    .header-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-2);
+      text-align: right;
+      line-height: 1.7;
+    }
+    .header-rule {
+      height: 1px;
+      background: var(--border);
+      margin-top: 18px;
+    }
+
+    /* ── DAY TABS ────────────────────────────────── */
+    .tabs-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12,12,14,0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .tabs-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      gap: 2px;
+    }
+    .tabs-inner::-webkit-scrollbar { display: none; }
+    .tab {
+      flex-shrink: 0;
+      padding: 10px 14px 8px;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      border-bottom: 2px solid transparent;
+      transition: all 0.18s;
+    }
+    .tab-day {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 3px;
+    }
+    .tab-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 17px;
+      letter-spacing: 1.5px;
+      color: var(--text-2);
+      line-height: 1;
+    }
+    .tab:hover .tab-name { color: var(--text); }
+    .tab.active { border-bottom-color: var(--rose); }
+    .tab.active .tab-name { color: var(--rose); }
+    .tab.active .tab-day { color: rgba(212,96,106,0.55); }
+    .tab.today .tab-day { color: var(--green) !important; }
+
+    /* ── TODAY BUTTON ────────────────────────────── */
+    .today-row { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .today-btn, .complete-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .today-btn {
+      background: rgba(72,200,120,0.08);
+      border: 1px solid rgba(72,200,120,0.28);
+      color: var(--green);
+    }
+    .today-btn:hover, .today-btn:active { background: rgba(72,200,120,0.18); }
+    .today-btn.is-today {
+      background: rgba(72,200,120,0.18);
+      border-color: var(--green);
+      font-weight: 600;
+    }
+    .complete-btn {
+      background: rgba(212,96,106,0.08);
+      border: 1px solid rgba(212,96,106,0.25);
+      color: var(--rose);
+    }
+    .complete-btn:hover, .complete-btn:active { background: rgba(212,96,106,0.18); }
+
+    /* ── PROGRESS PAGE ───────────────────────────── */
+    .prog-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .ps-item {
+      background: var(--surface);
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .ps-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--rose);
+      line-height: 1;
+    }
+    .ps-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-top: 4px;
+    }
+    .prog-ex-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .prog-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 8px;
+      gap: 12px;
+    }
+    .prog-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+    }
+    .prog-day-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--rose);
+      background: var(--rose-dim);
+      border: 1px solid var(--rose-mid);
+      padding: 3px 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    /* ── DELOAD BANNER ───────────────────────────── */
+    .deload-banner {
+      background: rgba(212,96,106,0.08);
+      border: 1px solid rgba(212,96,106,0.3);
+      border-left: 3px solid var(--rose);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+    .deload-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 5px;
+    }
+    .deload-desc { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+
+    /* ── COMBINED CHART ──────────────────────────── */
+    .combo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .combo-card-head {
+      padding: 14px 16px 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+    .combo-svg-wrap { padding: 0 16px 8px; }
+    .combo-svg { width: 100%; height: 160px; display: block; }
+    .combo-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      padding: 8px 16px 14px;
+      border-top: 1px solid var(--border);
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .legend-name { font-size: 11px; color: var(--text-2); }
+
+    /* ── WEEKLY VOLUME ───────────────────────────── */
+    .vol-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .vol-card-head {
+      padding: 14px 16px 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+    .vol-row {
+      display: flex;
+      align-items: center;
+      padding: 6px 16px;
+      gap: 10px;
+    }
+    .vol-row + .vol-row { border-top: 1px solid var(--border); }
+    .vol-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-2);
+      width: 72px;
+      flex-shrink: 0;
+    }
+    .vol-bar-wrap { flex: 1; height: 10px; background: var(--surface-2); border-radius: 5px; overflow: hidden; }
+    .vol-bar { height: 100%; border-radius: 5px; transition: width 0.4s ease; }
+    .vol-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-3);
+      width: 38px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── PER-EXERCISE EXPANDABLE CHART ───────────── */
+    .spark-wrap { padding: 0 16px 2px; cursor: pointer; }
+    .spark-thumb .spark-svg { width: 100%; height: 48px; display: block; }
+    .spark-full { display: none; }
+    .spark-wrap.expanded .spark-thumb { display: none; }
+    .spark-wrap.expanded .spark-full { display: block; }
+    .full-chart-svg { width: 100%; height: 160px; display: block; }
+    .spark-axis {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 0 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: var(--text-3);
+    }
+    .spark-hint { opacity: 0.5; font-size: 9px; }
+    .prog-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .prog-stat {
+      text-align: center;
+      padding: 12px 8px 10px;
+    }
+    .prog-stat + .prog-stat { border-left: 1px solid var(--border); }
+    .prog-stat-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .prog-stat-val.up   { color: var(--green); }
+    .prog-stat-val.down { color: var(--red); }
+    .prog-stat-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-top: 3px;
+    }
+    .prog-suggestion {
+      padding: 9px 16px;
+      font-size: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--green);
+      background: rgba(72,200,120,0.07);
+      border-top: 1px solid rgba(72,200,120,0.14);
+    }
+    .prog-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-3);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── COMPLETION TOAST ────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--green);
+      color: #0c0c0e;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      padding: 11px 22px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 300;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    #toast.toast-show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── MAIN ────────────────────────────────────── */
+    .main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+    .day-panel { display: none; animation: fadeIn 0.22s ease; }
+    .day-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+    /* ── DAY HEADER ──────────────────────────────── */
+    .day-head { margin-bottom: 24px; }
+    .day-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 12vw, 72px);
+      letter-spacing: 4px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .day-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .pill-strength { background: rgba(212,96,106,0.12); color: var(--rose);   border: 1px solid rgba(212,96,106,0.28); }
+    .pill-recovery { background: rgba(72,200,120,0.12); color: var(--green); border: 1px solid rgba(72,200,120,0.28); }
+    .pill-rest     { background: rgba(80,80,80,0.12);   color: var(--text-3);border: 1px solid rgba(80,80,80,0.2); }
+    .day-focus { font-size: 13px; color: var(--text-2); }
+    .day-dur {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-3);
+      margin-left: auto;
+    }
+
+    /* ── WARMUP ──────────────────────────────────── */
+    .warmup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--rose);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      margin-bottom: 22px;
+    }
+    .warmup-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--rose);
+      margin-bottom: 6px;
+    }
+    .warmup-text { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+
+    /* ── SECTION LABEL ───────────────────────────── */
+    .sec-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-3);
+      margin: 22px 0 10px;
+    }
+    .sec-label:first-of-type { margin-top: 0; }
+
+    /* ── FINISHER DIVIDER ────────────────────────── */
+    .finisher-div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 24px 0 12px;
+    }
+    .finisher-line { flex: 1; height: 1px; background: var(--rose-mid); }
+    .finisher-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--rose);
+    }
+
+    /* ── EXERCISE LIST ───────────────────────────── */
+    .ex-list { display: flex; flex-direction: column; gap: 6px; }
+
+    /* ── EXERCISE CARD ───────────────────────────── */
+    .ex-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.18s;
+    }
+    .ex-card:hover { border-color: rgba(212,96,106,0.3); }
+    .ex-card.priority { border-left: 3px solid var(--rose); }
+
+    .ex-row {
+      display: flex;
+      align-items: center;
+      min-height: 76px;
+    }
+    .ex-thumb {
+      width: 80px;
+      height: 76px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      background: #2e2e32;
+    }
+    .ex-thumb img {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.92;
+      filter: brightness(1.35) contrast(1.05);
+      transition: opacity 0.2s, filter 0.2s;
+    }
+    .ex-card:hover .ex-thumb img { opacity: 1; filter: brightness(1.5) contrast(1.05); }
+    .ex-ph {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+    .ex-ph-icon { font-size: 22px; line-height: 1; }
+    .ex-ph-lbl {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 9px;
+      letter-spacing: 1px;
+      opacity: 0.45;
+    }
+    .ex-info {
+      flex: 1;
+      padding: 0 10px 0 12px;
+      min-width: 0;
+    }
+    .ex-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      letter-spacing: 1px;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .ex-my-wt-row { display: none; margin-bottom: 2px; }
+    .ex-card.has-wt .ex-my-wt-row { display: flex; align-items: baseline; gap: 5px; }
+    .ex-card.has-wt .ex-plan-wt { display: none; }
+    .ex-my-wt {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--green);
+      line-height: 1;
+    }
+    .ex-my-wt-unit {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: rgba(72,200,120,0.6);
+    }
+    .ex-priority-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--rose);
+      border-radius: 50%;
+      margin-left: 6px;
+      margin-bottom: 2px;
+      vertical-align: middle;
+    }
+    .ex-mini-stats {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .ms {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+    .ms.rose { color: var(--rose); }
+
+    .ex-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 10px;
+      flex-shrink: 0;
+    }
+    .guide-btn {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--rose);
+      text-decoration: none;
+      padding: 5px 9px;
+      border: 1px solid var(--rose-mid);
+      border-radius: 5px;
+      background: var(--rose-dim);
+      white-space: nowrap;
+      transition: all 0.18s;
+    }
+    .guide-btn:hover {
+      background: rgba(212,96,106,0.2);
+      border-color: rgba(212,96,106,0.55);
+    }
+    .ex-arrow {
+      font-size: 12px;
+      color: var(--text-3);
+      transition: transform 0.18s;
+      padding: 4px 2px;
+    }
+    .ex-card.open .ex-arrow { transform: rotate(180deg); }
+
+    .ex-detail {
+      display: none;
+      padding: 10px 12px 12px 12px;
+      border-top: 1px solid var(--border);
+    }
+    .ex-card.open .ex-detail { display: block; }
+    .ex-note {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.65;
+    }
+    .ex-note strong { color: var(--rose); }
+    .rpe-note {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--red);
+      background: rgba(224,80,80,0.1);
+      border: 1px solid rgba(224,80,80,0.25);
+      border-radius: 4px;
+      padding: 2px 7px;
+      margin-top: 8px;
+    }
+
+    /* ── RECOVERY ACTIVITIES ─────────────────────── */
+    .rec-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 16px;
+      margin-bottom: 8px;
+    }
+    .rec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .rec-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 19px;
+      letter-spacing: 1px;
+    }
+    .rec-dur {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--green);
+    }
+    .rec-zone {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .rec-desc { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+
+    /* ── REST DAY ────────────────────────────────── */
+    .rest-block {
+      text-align: center;
+      padding: 72px 20px 48px;
+    }
+    .rest-word {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 20vw, 120px);
+      letter-spacing: 10px;
+      color: var(--surface-2);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .rest-sub { font-size: 14px; color: var(--text-3); margin-bottom: 24px; }
+    .rest-list {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+    .rest-item {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-2);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .rest-item::before { content: '—'; color: var(--rose); }
+
+    /* ── PROGRESSION CARD ────────────────────────── */
+    .prog-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 16px;
+      margin-top: 24px;
+    }
+    .prog-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 19px;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .prog-row {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .prog-row:last-child { border-bottom: none; }
+    .prog-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+    .prog-text { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+    .prog-text strong { color: var(--text); }
+
+    /* ── DONE TRACKING ───────────────────────────── */
+    .ex-check {
+      width: 36px;
+      height: 76px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ex-check-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--border-2);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s;
+      font-size: 13px;
+      color: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .ex-check-btn:hover { border-color: var(--green); color: rgba(72,200,120,0.4); }
+    .ex-card.done .ex-check-btn {
+      background: var(--green);
+      border-color: var(--green);
+      color: #0c0c0e;
+    }
+    .ex-card.done { opacity: 0.45; }
+    .ex-card.done .ex-name { text-decoration: line-through; }
+
+    .day-reset {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 9px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .day-reset:hover { color: var(--text-2); border-color: var(--border-2); }
+
+    /* ── WEIGHT TRACKER ──────────────────────────── */
+    .wt-section {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .wt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .wt-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--green);
+    }
+    .wt-plan {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-3);
+    }
+    .wt-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .wt-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 10px 10px;
+      border-radius: 6px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+      min-width: 42px;
+      text-align: center;
+    }
+    .wt-btn.neg { color: var(--red);   background: rgba(224,80,80,0.08);   border-color: rgba(224,80,80,0.2); }
+    .wt-btn.pos { color: var(--green); background: rgba(72,200,120,0.08);  border-color: rgba(72,200,120,0.2); }
+    .wt-btn.neg:hover { background: rgba(224,80,80,0.18); }
+    .wt-btn.pos:hover { background: rgba(72,200,120,0.18); }
+    .wt-display {
+      flex: 1;
+      text-align: center;
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
+      border-radius: 8px;
+      padding: 8px 4px;
+    }
+    .wt-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--green);
+      line-height: 1;
+    }
+    .wt-unit {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-3);
+      margin-left: 3px;
+    }
+    .wt-unit.hidden { display: none; }
+    .wt-last {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .wt-last-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-3);
+    }
+    .wt-last-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-2);
+    }
+    .wt-suggest {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--green);
+      background: rgba(72,200,120,0.1);
+      border: 1px solid rgba(72,200,120,0.25);
+      border-radius: 4px;
+      padding: 2px 8px;
+    }
+    .wt-empty { font-size: 11px; color: var(--text-3); font-style: italic; margin-top: 6px; }
+    .ex-note-wrap {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .site-header { padding: 12px 16px 0; }
+      .site-title { font-size: 26px; letter-spacing: 2px; }
+      .header-meta { display: none; }
+      .header-rule { margin-top: 10px; }
+      .tabs-wrap {
+        position: fixed;
+        top: auto; bottom: 0; left: 0; right: 0;
+        border-top: 1px solid var(--border-2);
+        border-bottom: none;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .tabs-inner { padding: 4px 0 0; justify-content: space-around; gap: 0; }
+      .tab {
+        flex: 1; text-align: center;
+        padding: 6px 2px 8px;
+        border-bottom: none; border-top: 2px solid transparent;
+        border-radius: 0; min-width: 0;
+      }
+      .tab.active { border-top-color: var(--rose); border-bottom-color: transparent; }
+      .tab-day  { font-size: 10px; letter-spacing: 1px; }
+      .tab-name { font-size: 15px; letter-spacing: 1px; }
+      .main { padding: 16px 12px calc(74px + env(safe-area-inset-bottom)) 12px; }
+      .day-title { font-size: 44px; }
+      .day-meta { gap: 6px; }
+      .day-focus { font-size: 15px; }
+      .day-dur { display: none; }
+      .pill { font-size: 11px; padding: 4px 12px; }
+      .sec-label { font-size: 12px; margin: 18px 0 8px; }
+      .finisher-lbl { font-size: 12px; }
+      .warmup { padding: 12px 14px; }
+      .warmup-lbl { font-size: 11px; }
+      .warmup-text { font-size: 15px; line-height: 1.6; }
+      .ex-list { gap: 6px; }
+      .ex-row { min-height: 72px; }
+      .ex-thumb { width: 68px; height: 72px; }
+      .ex-check { width: 44px; height: 72px; }
+      .ex-check-btn { width: 32px; height: 32px; font-size: 16px; }
+      .ex-info { padding: 0 6px 0 10px; }
+      .ex-name { font-size: 17px; }
+      .ex-my-wt { font-size: 22px; }
+      .ms { font-size: 14px; }
+      .ex-right { padding: 0 8px; }
+      .guide-btn { display: none; }
+      .ex-detail { padding: 14px; }
+      .ex-note { font-size: 15px; line-height: 1.7; }
+      .ex-note-wrap .guide-btn { display: inline-flex; font-size: 13px; padding: 8px 14px; }
+      .rpe-note { font-size: 13px; padding: 4px 10px; }
+      .wt-lbl  { font-size: 12px; }
+      .wt-plan { font-size: 13px; }
+      .wt-btn  { padding: 14px 8px; min-width: 52px; font-size: 15px; }
+      .wt-val  { font-size: 32px; }
+      .wt-display { padding: 10px 4px; }
+      .wt-last-lbl { font-size: 12px; }
+      .wt-last-val { font-size: 14px; }
+      .wt-suggest  { font-size: 13px; padding: 4px 10px; }
+      .wt-empty    { font-size: 13px; }
+      .rec-name { font-size: 19px; }
+      .rec-zone { font-size: 12px; }
+      .rec-desc { font-size: 15px; line-height: 1.65; }
+      .rest-sub { font-size: 15px; }
+      .rest-item { font-size: 15px; }
+      .prog-card { margin-top: 16px; }
+      .prog-title { font-size: 18px; }
+      .prog-text { font-size: 15px; line-height: 1.6; }
+      .day-reset { font-size: 12px; padding: 5px 12px; }
+      .ps-val { font-size: 28px; }
+      .ps-lbl { font-size: 9px; }
+      .prog-name { font-size: 16px; }
+      .prog-stat-val { font-size: 18px; }
+      .prog-stat-lbl { font-size: 9px; }
+      .prog-suggestion { font-size: 13px; }
+      .combo-svg { height: 140px; }
+      .full-chart-svg { height: 140px; }
+      .legend-name { font-size: 12px; }
+      .vol-label { font-size: 11px; width: 64px; }
+      .deload-desc { font-size: 14px; }
+      .today-row { gap: 8px; }
+      .today-btn, .complete-btn { flex: 1; padding: 13px 8px; font-size: 12px; text-align: center; }
+      #toast { bottom: calc(80px + env(safe-area-inset-bottom)); font-size: 13px; white-space: normal; text-align: center; max-width: 80vw; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-row">
+    <div class="site-title">MARICA<em>'S</em> PLAN</div>
+    <div class="header-meta">41 yrs · 173 cm · 55 kg<br>Advanced · Body Shape</div>
+  </div>
+  <div class="header-rule"></div>
+</header>
+
+<nav class="tabs-wrap">
+  <div class="tabs-inner" id="tabs"></div>
+</nav>
+
+<main class="main" id="main"></main>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────
+const MUSCLE_ICONS = {
+  chest:     { icon: '🫀', color: '#e05050', label: 'Chest' },
+  shoulders: { icon: '💪', color: '#d4606a', label: 'Shoulder' },
+  triceps:   { icon: '💪', color: '#d06020', label: 'Triceps' },
+  back:      { icon: '🔰', color: '#38bcd4', label: 'Back' },
+  glutes:    { icon: '🍑', color: '#d4606a', label: 'Glutes' },
+  legs:      { icon: '🦵', color: '#48c878', label: 'Legs' },
+  core:      { icon: '⚡', color: '#c8c030', label: 'Core' },
+};
+
+const EX_MUSCLE = {
+  'Barbell Hip Thrust':         'glutes',
+  'Romanian Deadlift':          'glutes',
+  'Cable Glute Kickback':       'glutes',
+  'Seated Hip Abductor':        'legs',
+  'Leg Curl':                   'legs',
+  'Incline Dumbbell Press':     'chest',
+  'Low-to-High Cable Fly':      'chest',
+  'Pec Deck':                   'chest',
+  'Tricep Pushdown':            'triceps',
+  'Overhead Tricep Extension':  'triceps',
+  'Bulgarian Split Squat':      'legs',
+  'Leg Press':                  'legs',
+  'Walking Lunges':             'legs',
+  'Leg Extension':              'legs',
+  'Single-leg Glute Bridge':    'glutes',
+  'Lat Pulldown':               'back',
+  'Seated Cable Row':           'back',
+  'Dumbbell Shoulder Press':    'shoulders',
+  'Cable Lateral Raise':        'shoulders',
+  'Face Pulls':                 'shoulders',
+  'Cable Crunch':               'core',
+  'Russian Twist':              'core',
+  'Dead Bugs':                  'core',
+  'Plank':                      'core',
+};
+
+// YouTube video IDs → img.youtube.com/vi/ID/hqdefault.jpg
+// Values starting with "http" are used as direct image URLs.
+const THUMB = {
+  'Incline Dumbbell Press':     'hChjZQhX1Ls',
+  'Tricep Pushdown':            '_w-HpW70nSQ',
+  'Overhead Tricep Extension':  'NRENeEgaIgA',
+  'Dumbbell Shoulder Press':    'FRxZ6wr5bpA',
+  'Cable Lateral Raise':        'ufrFCjERMDc',
+  'Face Pulls':                 'VdnHXklRQW8',
+  'Leg Curl':                   '3BWiLFc8Dbg',
+  'Walking Lunges':             'uRSsOoZG9z8',
+  // Wikimedia Commons photos
+  'Lat Pulldown':    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Diverging_Lat_Pulldown_Machine.jpg/500px-Diverging_Lat_Pulldown_Machine.jpg',
+  'Seated Cable Row':'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Woman_using_a_seated_cable_row_machine_at_the_gym.jpg/500px-Woman_using_a_seated_cable_row_machine_at_the_gym.jpg',
+  'Romanian Deadlift':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Romanian-deadlift-1.png/500px-Romanian-deadlift-1.png',
+  'Leg Press':       'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Young_man_using_a_leg_press_machine_at_the_gym.jpg/500px-Young_man_using_a_leg_press_machine_at_the_gym.jpg',
+  'Pec Deck':        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Cable-crossover-1.png/500px-Cable-crossover-1.png',
+};
+
+function thumb(name) {
+  const val = THUMB[name];
+  if (!val) return null;
+  if (val.startsWith('http')) return val;
+  return `https://img.youtube.com/vi/${val}/hqdefault.jpg`;
+}
+
+const DAYS = [
+  {
+    id: 'mon', short: 'D1', name: 'GLUTES',
+    focus: 'Glutes · Hamstrings',
+    type: 'strength', dur: '~60 min',
+    warmup: 'Hip circles ×20 each side · 10 bodyweight glute bridges · Band walks sideways ×15 each direction · 2 warm-up sets on hip thrust at 40% and 60%',
+    sections: [
+      { label: 'Main Lifts', exercises: [
+        { name:'Barbell Hip Thrust', sets:4, reps:'10', rest:'2 min', kg:'40–60 kg', lbs:'88–132 lbs', rpe:'RPE 9', priority:true,
+          note:'Back on bench at shoulder blade level. Drive through heels, squeeze glutes hard at the top. Full hip extension — your body forms a straight line. This is the #1 glute builder.',
+          guide:'https://www.youtube.com/results?search_query=barbell+hip+thrust+proper+form' },
+        { name:'Romanian Deadlift', sets:4, reps:'10', rest:'90 sec', kg:'30–50 kg', lbs:'66–110 lbs', priority:true,
+          note:'Push hips back until you feel a deep hamstring stretch. <strong>Lower back stays neutral — never rounds.</strong> Squeeze glutes to drive hips forward on the way up.',
+          guide:'https://www.youtube.com/results?search_query=romanian+deadlift+glutes+form' },
+      ]},
+      { label: 'Isolation', exercises: [
+        { name:'Cable Glute Kickback', sets:3, reps:'15', rest:'60 sec', kg:'10–20 kg', lbs:'22–44 lbs',
+          note:'Ankle strap on low cable. Lean forward slightly and kick straight back — keep the movement slow and controlled. Do not swing or rotate the hip.',
+          guide:'https://www.youtube.com/results?search_query=cable+glute+kickback+form' },
+        { name:'Seated Hip Abductor', sets:3, reps:'20', rest:'60 sec', kg:'30–50 kg', lbs:'66–110 lbs',
+          note:'Machine with knee pads. Push knees out against the pads — full range of motion. Lean slightly forward to bias the glutes rather than the TFL.',
+          guide:'https://www.youtube.com/results?search_query=seated+hip+abductor+machine+form' },
+        { name:'Leg Curl', sets:3, reps:'12', rest:'60 sec', kg:'25–40 kg', lbs:'55–88 lbs',
+          note:'Seated or lying machine. <strong>3-second lowering on every rep</strong> — this is where the hamstring growth happens. Do not let the weight drop.',
+          guide:'https://www.youtube.com/results?search_query=leg+curl+machine+proper+form' },
+      ]},
+    ]
+  },
+  {
+    id: 'tue', short: 'D2', name: 'CHEST',
+    focus: 'Chest · Triceps',
+    type: 'strength', dur: '~55 min',
+    warmup: 'Arm circles ×20 · Light cable fly ×15 · 2 warm-up sets incline press at 40% and 60%',
+    sections: [
+      { label: 'Main Lifts', exercises: [
+        { name:'Incline Dumbbell Press', sets:4, reps:'10', rest:'90 sec', kg:'10–16 kg', lbs:'22–35 lbs/hand', rpe:'RPE 9', priority:true,
+          note:'Bench at 30–45 degrees. Lower the dumbbells slowly (2–3 seconds), feel the stretch at the bottom. Press up and slightly inward. <strong>Incline targets the upper chest</strong> — the part that creates visible shape.',
+          guide:'https://www.youtube.com/results?search_query=incline+dumbbell+press+proper+form' },
+        { name:'Low-to-High Cable Fly', sets:3, reps:'12', rest:'75 sec', kg:'8–14 kg', lbs:'18–31 lbs/side',
+          note:'Cables set at the lowest position. Pull handles upward and across your body in an arc. Squeeze at the top. <strong>This hits the upper chest from a different angle</strong> than pressing.',
+          guide:'https://www.youtube.com/results?search_query=low+to+high+cable+fly+upper+chest' },
+        { name:'Pec Deck', sets:3, reps:'12', rest:'75 sec', kg:'20–35 kg', lbs:'44–77 lbs/side',
+          note:'Sit in the machine, arms on the arm pads. Bring pads together slowly — feel the chest squeeze. 2-second pause at full contraction. Let arms open fully for a good stretch.',
+          guide:'https://www.youtube.com/results?search_query=pec+deck+fly+machine+form' },
+      ]},
+      { label: 'Triceps', exercises: [
+        { name:'Tricep Pushdown', sets:3, reps:'12', rest:'60 sec', kg:'12–22 kg', lbs:'26–48 lbs',
+          note:'High cable pulley, rope or straight bar. <strong>Elbows pinned at sides — they do not move.</strong> Extend fully and squeeze at the bottom.',
+          guide:'https://www.youtube.com/results?search_query=cable+tricep+pushdown+proper+form' },
+        { name:'Overhead Tricep Extension', sets:3, reps:'12', rest:'60 sec', kg:'10–18 kg', lbs:'22–40 lbs',
+          note:'Cable rope overhead, or dumbbell held with both hands. <strong>Elbows stay close to the head.</strong> The overhead position stretches the long head of the tricep for maximum growth.',
+          guide:'https://www.youtube.com/results?search_query=overhead+tricep+extension+rope+form' },
+      ]},
+    ]
+  },
+  {
+    id: 'wed', short: 'D3', name: 'RECOVERY',
+    focus: 'Active Rest',
+    type: 'recovery', dur: '~50 min',
+    recovery: true,
+    activities: [
+      { name:'Walk or Easy Bike', dur:'30–40 min', zone:'Zone 1 · low effort',
+        desc:'Comfortable conversational pace. This moves waste products out of muscles and reduces next-day soreness. Keep it easy — if you are breathing hard, slow down.' },
+      { name:'Foam Rolling', dur:'10–15 min', zone:null,
+        desc:'Focus on glutes, hip flexors, quads, and upper back. 45 seconds per area — slow and deliberate, not rolling fast.' },
+      { name:'Mobility Work', dur:'10 min', zone:null,
+        desc:'Hip circles, pigeon pose, chest opener, thoracic rotation. These directly support the muscle groups trained this week.' },
+    ]
+  },
+  {
+    id: 'thu', short: 'D4', name: 'LEGS',
+    focus: 'Quads · Glutes',
+    type: 'strength', dur: '~65 min',
+    warmup: 'Leg swings ×20 each side · 10 bodyweight squats · 10 reverse lunges · 2 warm-up sets Bulgarian split squat at 40% and 60%',
+    sections: [
+      { label: 'Main Lifts', exercises: [
+        { name:'Bulgarian Split Squat', sets:4, reps:'10', rest:'2 min', kg:'8–14 kg', lbs:'18–31 lbs/hand', rpe:'RPE 9', priority:true,
+          note:'Rear foot on bench, front foot far forward. Lower until back knee nearly touches the floor. <strong>This is the best single-leg movement for glute and quad shape.</strong> Keep torso upright to bias glutes.',
+          guide:'https://www.youtube.com/results?search_query=bulgarian+split+squat+proper+form' },
+        { name:'Leg Press', sets:3, reps:'12', rest:'90 sec', kg:'60–100 kg', lbs:'132–220 lbs', priority:true,
+          note:'<strong>Place feet high on the platform</strong> — shoulder-width or slightly wider. High foot position shifts the work to glutes and hamstrings. Full range of motion — do not lock out at the top.',
+          guide:'https://www.youtube.com/results?search_query=leg+press+high+foot+placement+glutes' },
+      ]},
+      { label: 'Accessories', exercises: [
+        { name:'Walking Lunges', sets:3, reps:'20', rest:'90 sec', kg:'8–14 kg', lbs:'18–31 lbs/hand',
+          note:'Step forward and lower the back knee toward the floor. Push through the front heel to stand and step forward. Keep torso tall. Do all 20 reps in a row (10 each leg).',
+          guide:'https://www.youtube.com/results?search_query=walking+lunges+dumbbell+proper+form' },
+        { name:'Leg Extension', sets:3, reps:'15', rest:'60 sec', kg:'25–40 kg', lbs:'55–88 lbs',
+          note:'Seated machine. Extend fully and hold for 1 second at the top — the quad must work hardest at full extension. Lower slowly (3 seconds).',
+          guide:'https://www.youtube.com/results?search_query=leg+extension+machine+proper+form' },
+        { name:'Single-leg Glute Bridge', sets:3, reps:'12', rest:'60 sec', kg:'Bodyweight', lbs:'or add plate on hip',
+          note:'Lie on the floor, one leg extended, drive through the heel of the planted foot. Squeeze glutes hard at the top — do not let the hips drop on one side. Add a weight plate on the hip once bodyweight feels easy.',
+          guide:'https://www.youtube.com/results?search_query=single+leg+glute+bridge+form' },
+      ]},
+    ]
+  },
+  {
+    id: 'fri', short: 'D5', name: 'BACK',
+    focus: 'Back · Shoulders · Core',
+    type: 'strength', dur: '~65 min',
+    warmup: 'Shoulder rotations ×20 · Cat-cow ×10 · Dead bugs ×8 · 2 light sets lat pulldown at 40%',
+    sections: [
+      { label: 'Back & Shoulders', exercises: [
+        { name:'Lat Pulldown', sets:3, reps:'12', rest:'90 sec', kg:'35–55 kg', lbs:'77–121 lbs',
+          note:'Wide-grip bar. Full stretch at the top, pull to upper chest. <strong>Lead with elbows, not hands</strong> — think about pulling your elbows down and back.',
+          guide:'https://www.youtube.com/results?search_query=lat+pulldown+proper+form' },
+        { name:'Seated Cable Row', sets:3, reps:'12', rest:'90 sec', kg:'35–55 kg', lbs:'77–121 lbs',
+          note:'Low pulley, V-bar or wide bar. Pull elbows past your sides and hold the squeeze at full contraction for 1 second. Sit tall — do not lean back excessively.',
+          guide:'https://www.youtube.com/results?search_query=seated+cable+row+proper+form' },
+        { name:'Dumbbell Shoulder Press', sets:3, reps:'12', rest:'75 sec', kg:'8–14 kg', lbs:'18–31 lbs/hand',
+          note:'Sit on upright bench. Press dumbbells overhead — slight outward angle to engage more side delt. Full extension at top.',
+          guide:'https://www.youtube.com/results?search_query=seated+dumbbell+shoulder+press+form' },
+        { name:'Cable Lateral Raise', sets:3, reps:'15', rest:'60 sec', kg:'5–10 kg', lbs:'11–22 lbs',
+          note:'Single low cable handle. Slow up (2 sec), slow down (3 sec). No swinging. The side delts give shoulders their width.',
+          guide:'https://www.youtube.com/results?search_query=cable+lateral+raise+proper+form' },
+        { name:'Face Pulls', sets:3, reps:'15', rest:'60 sec', kg:'10–18 kg', lbs:'22–40 lbs',
+          note:'Cable rope, pulley at face height. Pull rope to your forehead with elbows flaring wide. Key for posture and shoulder health — never skip this.',
+          guide:'https://www.youtube.com/results?search_query=face+pulls+cable+proper+form' },
+      ]},
+      { label: 'Core Finisher', finisher: true, finisherLabel: 'Core Finisher · 3 rounds', exercises: [
+        { name:'Cable Crunch', sets:3, reps:'15', rest:'60 sec', kg:'15–25 kg', lbs:'33–55 lbs',
+          note:'Kneel in front of high cable, rope attachment behind head. Crunch down — the movement comes from the abs, not pulling with your arms. Round the upper back.',
+          guide:'https://www.youtube.com/results?search_query=cable+crunch+kneeling+proper+form' },
+        { name:'Russian Twist', sets:3, reps:'20', rest:'60 sec', kg:'5–10 kg', lbs:'11–22 lbs/side',
+          note:'Sit with torso at 45 degrees, feet slightly off the floor. Rotate the weight from side to side — keep abs tight throughout. Count each side as 1 rep.',
+          guide:'https://www.youtube.com/results?search_query=russian+twist+exercise+form' },
+        { name:'Dead Bugs', sets:3, reps:'12', rest:'60 sec', kg:'Bodyweight', lbs:'—',
+          note:'Lie on back. Extend opposite arm and leg slowly while pressing lower back flat to the floor. <strong>Lower back never lifts off the floor</strong> — that is the whole point of this exercise.',
+          guide:'https://www.youtube.com/results?search_query=dead+bugs+core+exercise+form' },
+        { name:'Plank', sets:3, reps:'45 sec', rest:'30 sec', kg:'Bodyweight', lbs:'—',
+          note:'Hips level — not sagging, not raised. Squeeze glutes and abs simultaneously. If form breaks, stop and rest rather than holding with bad form.',
+          guide:'https://www.youtube.com/results?search_query=plank+proper+form' },
+      ]},
+    ]
+  },
+  {
+    id: 'sat', short: 'D6', name: 'REST',
+    focus: 'Full Rest',
+    type: 'rest', dur: null,
+    rest: true
+  },
+  {
+    id: 'sun', short: 'D7', name: 'REST',
+    focus: 'Full Rest',
+    type: 'rest', dur: null,
+    rest: true
+  }
+];
+
+// ─── RENDER ─────────────────────────────────────────────────────────────────
+
+function exCard(ex, dayId) {
+  const imgUrl = thumb(ex.name);
+  const muscle = EX_MUSCLE[ex.name] || 'chest';
+  const mi = MUSCLE_ICONS[muscle] || MUSCLE_ICONS.chest;
+  const imgTag = imgUrl
+    ? `<img src="${imgUrl}" alt="${ex.name}" loading="lazy" onerror="this.style.display='none'">`
+    : '';
+
+  return `
+    <div class="ex-card${ex.priority ? ' priority' : ''}" data-ex="${ex.name}" data-day="${dayId}" onclick="toggle(this)">
+      <div class="ex-row">
+        <div class="ex-check" onclick="event.stopPropagation();toggleDone(this)">
+          <div class="ex-check-btn">✓</div>
+        </div>
+        <div class="ex-thumb">
+          <div class="ex-ph" style="background:${mi.color}18">
+            <div class="ex-ph-icon">${mi.icon}</div>
+            <div class="ex-ph-lbl">${mi.label.toUpperCase()}</div>
+          </div>
+          ${imgTag}
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">${ex.name}${ex.priority ? '<span class="ex-priority-dot"></span>' : ''}</div>
+          <div class="ex-my-wt-row"><span class="ex-my-wt"></span><span class="ex-my-wt-unit">kg</span></div>
+          <div class="ex-mini-stats">
+            <span class="ms">${ex.sets}×${ex.reps}</span>
+            <span class="ms rose ex-plan-wt">${ex.kg}</span>
+            <span class="ms">${ex.rest} between sets</span>
+          </div>
+        </div>
+        <div class="ex-right">
+          ${ex.guide ? `<a href="${ex.guide}" target="_blank" onclick="event.stopPropagation()" class="guide-btn">SEE MACHINE ↗</a>` : ''}
+          <div class="ex-arrow">▾</div>
+        </div>
+      </div>
+      <div class="ex-detail">
+        <div class="wt-section" data-ex="${ex.name}" data-plan="${ex.kg}">
+          <div class="wt-header">
+            <span class="wt-lbl">My Weight</span>
+            <span class="wt-plan">Plan: ${ex.kg}</span>
+          </div>
+          <div class="wt-controls">
+            <button class="wt-btn neg" onclick="event.stopPropagation();adjWt(this,-5)">−5</button>
+            <button class="wt-btn neg" onclick="event.stopPropagation();adjWt(this,-2.5)">−2.5</button>
+            <div class="wt-display">
+              <span class="wt-val">—</span><span class="wt-unit hidden"> kg</span>
+            </div>
+            <button class="wt-btn pos" onclick="event.stopPropagation();adjWt(this,+2.5)">+2.5</button>
+            <button class="wt-btn pos" onclick="event.stopPropagation();adjWt(this,+5)">+5</button>
+          </div>
+          <div class="wt-history"></div>
+        </div>
+        <div class="ex-note-wrap">
+          <div class="ex-note">${ex.note}</div>
+          ${ex.rpe ? `<div class="rpe-note">${ex.rpe} on last set</div>` : ''}
+          ${ex.guide ? `<a href="${ex.guide}" target="_blank" onclick="event.stopPropagation()" class="guide-btn" style="margin-top:10px;display:inline-flex">SEE MACHINE ↗</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function progCard() {
+  return `
+    <div class="prog-card">
+      <div class="prog-title">PROGRESSION RULES</div>
+      <div class="prog-row"><div class="prog-dot" style="background:var(--green)"></div><div class="prog-text"><strong>Add 2.5 kg</strong> — when all sets are done and the last set felt like 3+ reps left in the tank.</div></div>
+      <div class="prog-row"><div class="prog-dot" style="background:var(--rose)"></div><div class="prog-text"><strong>Stay same weight</strong> — when all reps were completed but the last set was at the limit.</div></div>
+      <div class="prog-row"><div class="prog-dot" style="background:var(--red)"></div><div class="prog-text"><strong>Drop 5%</strong> — if a rep failed or form broke down mid-set.</div></div>
+      <div class="prog-row"><div class="prog-dot" style="background:var(--text-3)"></div><div class="prog-text"><strong>Deload every 4–6 weeks</strong> — same movements at 60–65% of normal weight. This is when joints and connective tissue catch up.</div></div>
+    </div>`;
+}
+
+function buildPanel(day, isFirst) {
+  const el = document.createElement('div');
+  el.className = 'day-panel' + (isFirst ? ' active' : '');
+  el.dataset.id = day.id;
+
+  const typeLabels = { strength:'Strength', recovery:'Active Recovery', rest:'Rest' };
+  let html = `
+    <div class="day-head">
+      <div class="day-title">${day.name}</div>
+      <div class="day-meta">
+        <span class="pill pill-${day.type}">${typeLabels[day.type]}</span>
+        <span class="day-focus">${day.focus}</span>
+        ${day.dur ? `<span class="day-dur">${day.dur}</span>` : ''}
+        ${day.sections ? `<button class="day-reset" onclick="resetDay('${day.id}')">Reset workout</button>` : ''}
+      </div>
+      <div class="today-row">
+        <button class="today-btn" data-day="${day.id}" onclick="setToday('${day.id}')">Train this today</button>
+        ${!day.sections ? `<button class="complete-btn" onclick="advanceToNextDay('${day.id}')">Complete day \u2192</button>` : ''}
+      </div>
+    </div>`;
+
+  if (day.rest) {
+    html += `
+      <div class="rest-block">
+        <div class="rest-word">REST</div>
+        <div class="rest-sub">This is when muscles repair and grow.</div>
+        <div class="rest-list">
+          <div class="rest-item">7–9 hours sleep</div>
+          <div class="rest-item">120–140 g protein today</div>
+          <div class="rest-item">2–3 litres water</div>
+          <div class="rest-item">Optional 20-min walk if stiff — no elevated HR</div>
+        </div>
+      </div>`;
+
+  } else if (day.recovery) {
+    html += `
+      <div class="rec-card" style="border-left:3px solid var(--green)">
+        <div class="rec-head"><div class="rec-name" style="color:var(--green)">Today's Rule</div></div>
+        <div class="rec-desc">Keep intensity low today. Move gently to flush metabolic waste from muscles and reduce soreness before the next training day.</div>
+      </div>`;
+    day.activities.forEach(a => {
+      html += `
+        <div class="rec-card">
+          <div class="rec-head"><div class="rec-name">${a.name}</div><div class="rec-dur">${a.dur}</div></div>
+          ${a.zone ? `<div class="rec-zone">${a.zone}</div>` : ''}
+          <div class="rec-desc">${a.desc}</div>
+        </div>`;
+    });
+
+  } else {
+    // Strength day
+    if (day.warmup) {
+      html += `<div class="warmup"><div class="warmup-lbl">Warm-up · 5 min</div><div class="warmup-text">${day.warmup}</div></div>`;
+    }
+    day.sections.forEach(sec => {
+      if (sec.finisher) {
+        html += `<div class="finisher-div"><div class="finisher-line"></div><div class="finisher-lbl">${sec.finisherLabel || 'Finisher'}</div><div class="finisher-line"></div></div>`;
+      } else {
+        html += `<div class="sec-label">${sec.label}</div>`;
+      }
+      html += `<div class="ex-list">`;
+      sec.exercises.forEach(ex => { html += exCard(ex, day.id); });
+      html += `</div>`;
+    });
+    html += progCard();
+  }
+
+  el.innerHTML = html;
+  return el;
+}
+
+function toggle(card) { card.classList.toggle('open'); }
+
+// ── DONE TRACKING ──────────────────────────────────────────────────────────
+
+function toggleDone(btn) {
+  const card = btn.closest('.ex-card');
+  const exName = card.dataset.ex;
+  const dayId  = card.dataset.day;
+  const isDone = card.classList.toggle('done');
+  const key = `done:${dayId}:${exName}`;
+  isDone ? localStorage.setItem(key, '1') : localStorage.removeItem(key);
+  if (isDone) {
+    const wt = getWt(exName);
+    if (wt !== null) {
+      logWtHistory(exName, wt);
+      const section = card.querySelector('.wt-section');
+      if (section) section.querySelector('.wt-history').innerHTML = historyHtml(exName);
+    }
+    if (localStorage.getItem('today') === dayId && allExercisesDone(dayId)) {
+      advanceToNextDay(dayId);
+    }
+  }
+}
+
+function allExercisesDone(dayId) {
+  const cards = document.querySelectorAll(`.day-panel[data-id="${dayId}"] .ex-card`);
+  return cards.length > 0 && [...cards].every(c => c.classList.contains('done'));
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('toast-show');
+  setTimeout(() => t.classList.remove('toast-show'), 2200);
+}
+
+function advanceToNextDay(currentDayId) {
+  const idx = DAYS.findIndex(d => d.id === currentDayId);
+  const next = DAYS[(idx + 1) % DAYS.length];
+  showToast('Day complete \u2713  \u2192  ' + next.short + ' \u00b7 ' + next.name);
+  setTimeout(() => setToday(next.id), 2000);
+}
+
+function loadDone(dayId) {
+  document.querySelectorAll(`.day-panel[data-id="${dayId}"] .ex-card`).forEach(card => {
+    const key = `done:${dayId}:${card.dataset.ex}`;
+    card.classList.toggle('done', !!localStorage.getItem(key));
+  });
+}
+
+function resetDay(dayId) {
+  document.querySelectorAll(`.day-panel[data-id="${dayId}"] .ex-card`).forEach(card => {
+    card.classList.remove('done');
+    localStorage.removeItem(`done:${dayId}:${card.dataset.ex}`);
+  });
+}
+
+// ── TODAY TRACKING ──────────────────────────────────────────────────────────
+
+function updateTodayMarkers(dayId) {
+  document.querySelectorAll('.tab').forEach(t => {
+    const isToday = t.dataset.id === dayId;
+    const dayEl = t.querySelector('.tab-day');
+    if (isToday) {
+      if (!dayEl.dataset.orig) dayEl.dataset.orig = dayEl.textContent;
+      dayEl.textContent = 'TODAY';
+    } else if (dayEl.dataset.orig) {
+      dayEl.textContent = dayEl.dataset.orig;
+    }
+    t.classList.toggle('today', isToday);
+  });
+  document.querySelectorAll('.today-btn').forEach(btn => {
+    const isThis = btn.dataset.day === dayId;
+    btn.textContent = isThis ? 'Training today \u2713' : 'Train this today';
+    btn.classList.toggle('is-today', isThis);
+  });
+}
+
+function setToday(dayId) {
+  localStorage.setItem('today', dayId);
+  resetDay(dayId);
+  updateTodayMarkers(dayId);
+  setDay(dayId);
+}
+
+// ── WEIGHT TRACKING ────────────────────────────────────────────────────────
+
+function getWt(exName) {
+  const v = localStorage.getItem('wt:' + exName);
+  return v !== null ? parseFloat(v) : null;
+}
+
+function saveWt(exName, weight) {
+  localStorage.setItem('wt:' + exName, weight);
+}
+
+function getWtHistory(exName) {
+  try { return JSON.parse(localStorage.getItem('wth:' + exName) || '[]'); }
+  catch { return []; }
+}
+
+function logWtHistory(exName, weight) {
+  const today = new Date().toISOString().slice(0, 10);
+  const hist = getWtHistory(exName);
+  if (hist.length > 0 && hist[hist.length - 1].date === today) {
+    hist[hist.length - 1].weight = weight;
+  } else {
+    hist.push({ date: today, weight });
+  }
+  localStorage.setItem('wth:' + exName, JSON.stringify(hist));
+}
+
+function fmtDate(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+}
+
+function wtSuggestion(exName) {
+  const hist = getWtHistory(exName);
+  if (hist.length < 2) return null;
+  const last = hist[hist.length - 1];
+  const prev = hist[hist.length - 2];
+  if (last.weight === prev.weight) return Math.round((last.weight + 2.5) * 10) / 10;
+  return null;
+}
+
+function historyHtml(exName) {
+  const hist = getWtHistory(exName);
+  if (hist.length === 0) return '<div class="wt-empty">No sessions yet — logged when you tick \u2713 done</div>';
+  const last = hist[hist.length - 1];
+  const suggest = wtSuggestion(exName);
+  const suggestHtml = suggest ? `<span class="wt-suggest">\u2191 Try ${suggest} kg</span>` : '';
+  return `<div class="wt-last">
+    <span class="wt-last-lbl">Last</span>
+    <span class="wt-last-val">${fmtDate(last.date)} \u00b7 ${last.weight} kg</span>
+    ${suggestHtml}
+  </div>`;
+}
+
+function setCardWt(card, wt) {
+  card.classList.add('has-wt');
+  const wtEl = card.querySelector('.ex-my-wt');
+  if (wtEl) wtEl.textContent = wt;
+}
+
+function adjWt(btn, delta) {
+  const section = btn.closest('.wt-section');
+  const exName  = section.dataset.ex;
+  const valEl   = section.querySelector('.wt-val');
+  const unitEl  = section.querySelector('.wt-unit');
+  let current = parseFloat(valEl.textContent);
+  if (isNaN(current)) {
+    const m = (section.dataset.plan || '').match(/(\d+\.?\d*)/);
+    current = m ? parseFloat(m[1]) : 0;
+  }
+  const newWt = Math.max(0, Math.round((current + delta) * 10) / 10);
+  valEl.textContent = newWt;
+  unitEl.classList.remove('hidden');
+  saveWt(exName, newWt);
+  section.querySelector('.wt-history').innerHTML = historyHtml(exName);
+  setCardWt(section.closest('.ex-card'), newWt);
+}
+
+function initWeights(dayId) {
+  const panel = document.querySelector(`.day-panel[data-id="${dayId}"]`);
+  if (!panel) return;
+  panel.querySelectorAll('.wt-section').forEach(section => {
+    const exName = section.dataset.ex;
+    const wt = getWt(exName);
+    const valEl  = section.querySelector('.wt-val');
+    const unitEl = section.querySelector('.wt-unit');
+    if (wt !== null) {
+      valEl.textContent = wt;
+      unitEl.classList.remove('hidden');
+      section.querySelector('.wt-history').innerHTML = historyHtml(exName);
+      setCardWt(section.closest('.ex-card'), wt);
+    }
+  });
+}
+
+// ── PROGRESS PAGE ──────────────────────────────────────────────────────────
+
+function sparklineSVG(hist) {
+  if (hist.length < 2) return '';
+  const W = 300, H = 48;
+  const weights = hist.map(h => h.weight);
+  const min = Math.min(...weights);
+  const max = Math.max(...weights);
+  const range = max - min || 1;
+  const px = 4, py = 6;
+  const cx = (i) => px + (i / (hist.length - 1)) * (W - px * 2);
+  const cy = (w) => py + (1 - (w - min) / range) * (H - py * 2);
+
+  let d = `M ${cx(0).toFixed(1)},${cy(weights[0]).toFixed(1)}`;
+  for (let i = 1; i < hist.length; i++) {
+    const x1 = cx(i-1), y1 = cy(weights[i-1]);
+    const x2 = cx(i),   y2 = cy(weights[i]);
+    const mx = (x1 + x2) / 2;
+    d += ` C ${mx.toFixed(1)},${y1.toFixed(1)} ${mx.toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+  }
+  const area = d + ` L ${cx(hist.length-1).toFixed(1)},${H} L ${cx(0).toFixed(1)},${H} Z`;
+  const dots = hist.map((h, i) =>
+    `<circle cx="${cx(i).toFixed(1)}" cy="${cy(h.weight).toFixed(1)}" r="${hist.length <= 10 ? 3 : 0}" fill="var(--green)"/>`
+  ).join('');
+  return `<svg class="spark-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <path d="${area}" fill="rgba(72,200,120,0.10)"/>
+    <path d="${d}" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+    ${dots}
+  </svg>`;
+}
+
+function fullChartSVG(hist) {
+  if (hist.length < 2) return '';
+  const W = 280, H = 160;
+  const pL = 42, pR = 10, pT = 14, pB = 26;
+  const cW = W - pL - pR, cH = H - pT - pB;
+  const weights = hist.map(h => h.weight);
+  const minW = Math.min(...weights), maxW = Math.max(...weights);
+  const step = (maxW - minW) <= 10 ? 2.5 : (maxW - minW) <= 30 ? 5 : 10;
+  const gMin = Math.floor(minW / step) * step;
+  const gMax = Math.ceil(maxW / step) * step;
+  const gRange = gMax - gMin || step;
+  const cx = i => pL + (i / (hist.length - 1)) * cW;
+  const cy = w => pT + (1 - (w - gMin) / gRange) * cH;
+
+  let path = `M ${cx(0).toFixed(1)},${cy(weights[0]).toFixed(1)}`;
+  for (let i = 1; i < hist.length; i++) {
+    const [x1,y1,x2,y2] = [cx(i-1),cy(weights[i-1]),cx(i),cy(weights[i])];
+    const mx = (x1+x2)/2;
+    path += ` C ${mx.toFixed(1)},${y1.toFixed(1)} ${mx.toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+  }
+  const area = path + ` L ${cx(hist.length-1).toFixed(1)},${pT+cH} L ${cx(0).toFixed(1)},${pT+cH} Z`;
+
+  let grid = '', yLbls = '';
+  for (let w = gMin; w <= gMax + 0.01; w += step) {
+    const y = cy(w).toFixed(1);
+    grid  += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    yLbls += `<text x="${pL-5}" y="${(parseFloat(y)+3.5).toFixed(1)}" text-anchor="end" fill="rgba(200,196,190,0.55)" font-size="10" font-family="IBM Plex Mono,monospace">${w}</text>`;
+  }
+
+  const xIdx = hist.length <= 4 ? hist.map((_,i)=>i) : [0, Math.floor((hist.length-1)/2), hist.length-1];
+  const xLbls = [...new Set(xIdx)].map(i => {
+    const lbl = fmtDate(hist[i].date);
+    const anchor = i === 0 ? 'start' : i === hist.length-1 ? 'end' : 'middle';
+    return `<text x="${cx(i).toFixed(1)}" y="${H-4}" text-anchor="${anchor}" fill="rgba(200,196,190,0.45)" font-size="10" font-family="IBM Plex Mono,monospace">${lbl}</text>`;
+  }).join('');
+
+  const dots = hist.map((h, i) => {
+    const x = cx(i).toFixed(1), y = cy(h.weight).toFixed(1);
+    const r = i === hist.length-1 ? 4 : 2.5;
+    const fill = i === hist.length-1 ? 'var(--green)' : 'rgba(72,200,120,0.65)';
+    const showLbl = i === 0 || i === hist.length-1 || hist.length <= 5;
+    return `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"/>`
+      + (showLbl ? `<text x="${x}" y="${(parseFloat(y)-7).toFixed(1)}" text-anchor="middle" fill="rgba(200,196,190,0.75)" font-size="10" font-family="IBM Plex Mono,monospace">${h.weight}</text>` : '');
+  }).join('');
+
+  return `<svg class="full-chart-svg" viewBox="0 0 ${W} ${H}">
+    ${grid}
+    <path d="${area}" fill="rgba(72,200,120,0.09)"/>
+    <path d="${path}" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${yLbls}${xLbls}${dots}
+  </svg>`;
+}
+
+function combinedChartSVG(exs) {
+  const valid = exs.filter(e => e.hist.length >= 2);
+  if (valid.length === 0) return null;
+  const W = 300, H = 160;
+  const pL = 10, pR = 10, pT = 10, pB = 28;
+  const cW = W - pL - pR, cH = H - pT - pB;
+
+  const allPcts = valid.flatMap(e => { const f = e.hist[0].weight; return e.hist.map(h => h.weight/f*100); });
+  const minP = Math.floor(Math.min(...allPcts) / 5) * 5;
+  const maxP = Math.ceil(Math.max(...allPcts) / 5) * 5;
+  const pRange = maxP - minP || 10;
+  const pyFn = p => pT + (1 - (p - minP) / pRange) * cH;
+
+  const COLORS = ['#d4606a','#38bcd4','#48c878','#f0a030','#b870e8','#e07840','#40c0b0','#e0a060'];
+  let grid = '';
+  const step = pRange <= 15 ? 5 : 10;
+  for (let p = minP; p <= maxP; p += step) {
+    const y = pyFn(p).toFixed(1);
+    grid += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    if (p === 100) grid += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>`;
+  }
+  const xLbls = `<text x="${pL}" y="${H-4}" text-anchor="start" fill="rgba(200,196,190,0.4)" font-size="9" font-family="IBM Plex Mono,monospace">start</text>
+    <text x="${W-pR}" y="${H-4}" text-anchor="end" fill="rgba(200,196,190,0.4)" font-size="9" font-family="IBM Plex Mono,monospace">latest</text>`;
+
+  let lines = '';
+  valid.forEach((ex, ei) => {
+    const color = COLORS[ei % COLORS.length];
+    const base = ex.hist[0].weight;
+    const pts = ex.hist.map((h, i) => ({
+      x: (pL + (i / (ex.hist.length-1)) * cW).toFixed(1),
+      y: pyFn(h.weight / base * 100).toFixed(1)
+    }));
+    let d = `M ${pts[0].x},${pts[0].y}`;
+    for (let i = 1; i < pts.length; i++) {
+      const mx = ((parseFloat(pts[i-1].x)+parseFloat(pts[i].x))/2).toFixed(1);
+      d += ` C ${mx},${pts[i-1].y} ${mx},${pts[i].y} ${pts[i].x},${pts[i].y}`;
+    }
+    const last = pts[pts.length-1];
+    lines += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>`;
+    lines += `<circle cx="${last.x}" cy="${last.y}" r="3.5" fill="${color}"/>`;
+  });
+
+  return { svg: `<svg class="combo-svg" viewBox="0 0 ${W} ${H}">${grid}${lines}${xLbls}</svg>`, colors: COLORS };
+}
+
+function weeklyVolumeHTML(tracked) {
+  const vol = {};
+  Object.keys(MUSCLE_ICONS).forEach(m => { vol[m] = 0; });
+  tracked.forEach(ex => {
+    const m = EX_MUSCLE[ex.name]; if (!m) return;
+    const w = ex.hist[ex.hist.length-1].weight;
+    const reps = parseInt(ex.reps) || 10;
+    vol[m] = (vol[m] || 0) + ex.sets * reps * w;
+  });
+  const entries = Object.entries(vol).filter(([,v]) => v > 0).sort((a,b) => b[1]-a[1]);
+  if (entries.length === 0) return '';
+  const maxV = entries[0][1];
+  const rows = entries.map(([m, v]) => {
+    const mi = MUSCLE_ICONS[m];
+    const pct = (v / maxV * 100).toFixed(0);
+    const label = Math.round(v) >= 1000 ? `${(v/1000).toFixed(1)}k` : Math.round(v);
+    return `<div class="vol-row">
+      <div class="vol-label">${mi.label}</div>
+      <div class="vol-bar-wrap"><div class="vol-bar" style="width:${pct}%;background:${mi.color}40;border-right:2px solid ${mi.color}"></div></div>
+      <div class="vol-num">${label}</div>
+    </div>`;
+  }).join('');
+  return `<div class="vol-card"><div class="vol-card-head">Weekly Volume \u00b7 sets \u00d7 reps \u00d7 kg</div>${rows}</div>`;
+}
+
+function deloadBanner(tracked) {
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-42);
+  const cutStr = cutoff.toISOString().slice(0,10);
+  const dates = new Set(tracked.flatMap(e => e.hist.filter(h => h.date >= cutStr).map(h => h.date)));
+  if (dates.size < 20) return '';
+  return `<div class="deload-banner">
+    <div class="deload-title">Deload week due</div>
+    <div class="deload-desc">${dates.size} training days in the last 6 weeks. Drop to 60\u201365% of normal weights this week.</div>
+  </div>`;
+}
+
+function toggleExChart(wrap, exName) {
+  const isExpanded = wrap.classList.toggle('expanded');
+  if (isExpanded) {
+    const fullEl = wrap.querySelector('.spark-full');
+    if (!fullEl.dataset.built) {
+      fullEl.innerHTML = fullChartSVG(getWtHistory(exName));
+      fullEl.dataset.built = '1';
+    }
+  }
+}
+
+function progressCard(ex) {
+  const hist = ex.hist;
+  const cur   = hist[hist.length - 1].weight;
+  const first = hist[0].weight;
+  const delta = Math.round((cur - first) * 10) / 10;
+  const dStr  = delta > 0 ? `+${delta}` : `${delta}`;
+  const dCls  = delta > 0 ? 'up' : delta < 0 ? 'down' : '';
+  const suggest = wtSuggestion(ex.name);
+  const safeName = ex.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+  const chart = hist.length >= 2 ? `
+    <div class="spark-wrap" onclick="toggleExChart(this,'${safeName}')">
+      <div class="spark-thumb">${sparklineSVG(hist)}</div>
+      <div class="spark-full"></div>
+      <div class="spark-axis">
+        <span>${fmtDate(hist[0].date)}</span>
+        <span class="spark-hint">tap to expand</span>
+        <span>${fmtDate(hist[hist.length-1].date)}</span>
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="prog-ex-card">
+      <div class="prog-card-head">
+        <div class="prog-name">${ex.name}</div>
+        <div class="prog-day-tag">${ex.dayShort}</div>
+      </div>
+      ${chart}
+      <div class="prog-stats-row">
+        <div class="prog-stat"><div class="prog-stat-val">${cur}</div><div class="prog-stat-lbl">Current kg</div></div>
+        <div class="prog-stat"><div class="prog-stat-val ${dCls}">${dStr}</div><div class="prog-stat-lbl">Progress kg</div></div>
+        <div class="prog-stat"><div class="prog-stat-val">${hist.length}</div><div class="prog-stat-lbl">Sessions</div></div>
+      </div>
+      ${suggest ? `<div class="prog-suggestion">\u2191 Try ${suggest} kg next session</div>` : ''}
+    </div>`;
+}
+
+function buildProgressHTML() {
+  const tracked = [];
+  const seen = new Set();
+  DAYS.forEach(day => {
+    if (!day.sections) return;
+    day.sections.forEach(sec => {
+      sec.exercises.forEach(ex => {
+        if (seen.has(ex.name)) return;
+        const hist = getWtHistory(ex.name);
+        if (hist.length > 0) {
+          seen.add(ex.name);
+          tracked.push({ ...ex, dayShort: day.short, dayName: day.name, dayId: day.id, hist });
+        }
+      });
+    });
+  });
+
+  if (tracked.length === 0) {
+    return `<div class="day-head"><div class="day-title">STATS</div></div>
+      <div class="prog-empty">No progress data yet.<br>Log weights and mark exercises done<br>to see your progress here.</div>`;
+  }
+
+  const totalSessions = tracked.reduce((s, e) => s + e.hist.length, 0);
+  const bestGain = tracked.reduce((b, e) => {
+    const g = e.hist[e.hist.length-1].weight - e.hist[0].weight;
+    return g > b.g ? { g, label: `+${Math.round(g*10)/10}` } : b;
+  }, { g: -Infinity, label: '\u2014' });
+
+  const summary = `
+    <div class="prog-summary">
+      <div class="ps-item"><div class="ps-val">${tracked.length}</div><div class="ps-lbl">Exercises</div></div>
+      <div class="ps-item"><div class="ps-val">${totalSessions}</div><div class="ps-lbl">Sessions</div></div>
+      <div class="ps-item"><div class="ps-val">${bestGain.g > 0 ? bestGain.label : '\u2014'}</div><div class="ps-lbl">Best gain</div></div>
+    </div>`;
+
+  const COLORS = ['#d4606a','#38bcd4','#48c878','#f0a030','#b870e8','#e07840','#40c0b0','#e0a060'];
+  const forCombo = tracked.filter(e => e.hist.length >= 2).slice(0, 8);
+  let comboSection = '';
+  if (forCombo.length >= 2) {
+    const result = combinedChartSVG(forCombo);
+    if (result) {
+      const legend = forCombo.map((ex, i) => {
+        const base = ex.hist[0].weight, cur = ex.hist[ex.hist.length-1].weight;
+        const pct = Math.round((cur/base - 1) * 100);
+        const sign = pct >= 0 ? '+' : '';
+        return `<div class="legend-item"><span class="legend-dot" style="background:${COLORS[i % COLORS.length]}"></span><span class="legend-name">${ex.name} <span style="opacity:.55">${sign}${pct}%</span></span></div>`;
+      }).join('');
+      comboSection = `<div class="combo-card">
+        <div class="combo-card-head">All exercises \u00b7 % of starting weight</div>
+        <div class="combo-svg-wrap">${result.svg}</div>
+        <div class="combo-legend">${legend}</div>
+      </div>`;
+    }
+  }
+
+  const volumeSection = weeklyVolumeHTML(tracked);
+  const deload = deloadBanner(tracked);
+
+  let cards = '';
+  DAYS.forEach(day => {
+    if (!day.sections) return;
+    const exs = tracked.filter(e => e.dayId === day.id);
+    if (exs.length === 0) return;
+    cards += `<div class="sec-label">${day.short} \u00b7 ${day.name}</div>`;
+    exs.forEach(ex => { cards += progressCard(ex); });
+  });
+
+  return `<div class="day-head"><div class="day-title">STATS</div></div>
+    ${deload}${summary}${comboSection}${cards}${volumeSection}`;
+}
+
+function showProgress() {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-progress').classList.add('active');
+  const panel = document.getElementById('panel-progress');
+  panel.classList.add('active');
+  panel.innerHTML = buildProgressHTML();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setDay(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.id === id));
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.toggle('active', p.dataset.id === id));
+  loadDone(id);
+  initWeights(id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+const tabs = document.getElementById('tabs');
+const main = document.getElementById('main');
+
+DAYS.forEach((day, i) => {
+  const tab = document.createElement('div');
+  tab.className = 'tab' + (i === 0 ? ' active' : '');
+  tab.dataset.id = day.id;
+  tab.innerHTML = `<div class="tab-day">${day.short}</div><div class="tab-name">${day.name}</div>`;
+  tab.addEventListener('click', () => setDay(day.id));
+  tabs.appendChild(tab);
+  main.appendChild(buildPanel(day, i === 0));
+});
+
+// Progress tab + panel
+const progTab = document.createElement('div');
+progTab.className = 'tab';
+progTab.id = 'tab-progress';
+progTab.dataset.id = 'progress';
+progTab.innerHTML = `<div class="tab-day">PRG</div><div class="tab-name">STATS</div>`;
+progTab.addEventListener('click', showProgress);
+tabs.appendChild(progTab);
+const progPanel = document.createElement('div');
+progPanel.className = 'day-panel';
+progPanel.id = 'panel-progress';
+progPanel.dataset.id = 'progress';
+main.appendChild(progPanel);
+
+// Restore "today" from last session; otherwise default to first day
+const savedToday = localStorage.getItem('today');
+if (savedToday && DAYS.find(d => d.id === savedToday)) {
+  updateTodayMarkers(savedToday);
+  setDay(savedToday);
+} else {
+  loadDone(DAYS[0].id);
+  initWeights(DAYS[0].id);
+}
+</script>
+</body>
+</html>
