@@ -12,5 +12,5 @@
   <!-- Border -->
   <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.5" fill="none" stroke="#ff2020" stroke-opacity="0.35" stroke-width="1.5"/>
   <!-- Heart -->
-  <path d="M16 25 C16 25 4 18 4 11.5 C4 7.5 7.5 5 11.5 5 C13.5 5 15.2 6.2 16 7.8 C16.8 6.2 18.5 5 20.5 5 C24.5 5 28 7.5 28 11.5 C28 18 16 25 16 25Z" fill="#ff2020"/>
+  <text x="16" y="24" text-anchor="middle" font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif" font-size="22" fill="#ff2020">&#x2665;</text>
 </svg>
